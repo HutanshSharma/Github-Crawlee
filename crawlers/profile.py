@@ -1,5 +1,3 @@
-from main import scrapper
-
 def extract(soup):
     data = dict()
 
@@ -48,7 +46,3 @@ def extract(soup):
 
     return data
 
-if __name__=="__main__":
-    link = "https://github.com/DZDasherKTB?tab=repositories"
-    data = scrapper(link,extract)
-    print(data)

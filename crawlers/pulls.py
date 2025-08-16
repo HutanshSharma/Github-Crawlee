@@ -1,5 +1,3 @@
-from main import scrapper
-
 def extract(soup):
     div = soup.find('div',id="js-issues-toolbar")
     anchor = div.find_all("a",href=lambda href: href and '/pulls' in href)
@@ -16,8 +14,3 @@ def extract(soup):
     pulls['labels'] = labels_number
     pulls['milestones'] = milestones_number
     return pulls
-
-if __name__ == "__main__":
-    link = "https://github.com/elder-plinius/L1B3RT4S/pulls"
-    data = scrapper(link,extract)
-    print(data)

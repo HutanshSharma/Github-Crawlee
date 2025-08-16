@@ -1,5 +1,3 @@
-from main import scrapper
-
 def extract(soup):
     commit_data = dict()
 
@@ -12,8 +10,3 @@ def extract(soup):
         li = ul.find_all('li')
         commit_data[date_stripped] = len(li)
     return commit_data
-
-if __name__=="__main__":
-    link = "https://github.com/HutanshSharma/PortFolio/commits/main/"
-    data = scrapper(link,extract)
-    print(data)

@@ -1,5 +1,3 @@
-from main import scrapper
-
 def extract(soup):
     
     repo_info = {
@@ -40,22 +38,17 @@ def extract(soup):
         if stars_count_element:
             repo_info['stars'] = stars_count_element.get_text(strip=True)
 
-
-    languages_list = soup.find('h2', string='Languages').find_next_sibling('ul', class_='list-style-none')
-    if languages_list:
-        language_items = languages_list.find_all('li')
-        for item in language_items:
-            language_name = item.find('span', class_='color-fg-default').get_text(strip=True)
-            language_percentage = item.find('span', class_=None).get_text(strip=True)
-            repo_info['languages'].append({
-                'name': language_name,
-                'percentage': language_percentage
-            })
+    temp = soup.find('h2',string='Languages')
+    if temp:
+        languages_list = temp.find_next_sibling('ul', class_='list-style-none')
+        if languages_list:
+            language_items = languages_list.find_all('li')
+            for item in language_items:
+                language_name = item.find('span', class_='color-fg-default').get_text(strip=True)
+                language_percentage = item.find('span', class_=None).get_text(strip=True)
+                repo_info['languages'].append({
+                    'name': language_name,
+                    'percentage': language_percentage
+                })
 
     return repo_info
-    
-
-if __name__=="__main__":
-    link = "https://github.com/DZDasherKTB/movie_recommendation_system"
-    data = scrapper(link,extract)
-    print(data)

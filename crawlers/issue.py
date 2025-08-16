@@ -1,5 +1,3 @@
-from main import scrapper
-
 def extract(soup):
     div = soup.find('div',class_="ListItems-module__listContainer--sgptj")
     anchor = div.find_all("a",href=lambda href: href and '/issues' in href)
@@ -10,8 +8,3 @@ def extract(soup):
     issues['open'] = open
     issues['closed'] = closed
     return issues
-
-if __name__ == "__main__":
-    link = "https://github.com/elder-plinius/L1B3RT4S/issues"
-    data = scrapper(link,extract)
-    print(data)
