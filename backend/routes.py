@@ -5,6 +5,7 @@ from crawlers.pulls import extract as pull_scrap
 from crawlers.repo import extract as repo_scrap
 from crawlers.issue import extract as issue_scrap
 from crawlers.commit import extract as commit_scrap
+from crawlers.pulse import extract as pulse_scrap
 from backend import app
 
 @app.route('/profile/<nickname>')
@@ -35,4 +36,10 @@ def issues(nickname,repository):
 def commits(nickname,repository):
     link = f"https://github.com/{nickname}/{repository}/commits/main/"
     data = scrapper(link,commit_scrap)
+    return jsonify(data)
+
+@app.route('/pulse/<nickname>/<repository>')
+def pulse(nickname,repository):
+    link = f"https://github.com/{nickname}/{repository}/pulse"
+    data = scrapper(link,pulse_scrap)
     return jsonify(data)
