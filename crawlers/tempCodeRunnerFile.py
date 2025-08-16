@@ -1,1 +1,0 @@
-    # stars = sidebar.find("a",{"href":f"{link}/stargazers"})

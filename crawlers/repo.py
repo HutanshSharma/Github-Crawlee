@@ -6,12 +6,17 @@ def extract(soup):
         "stars": "N/A",
         "forks": "N/A",
         "watchers": 'N/A',
+        "branches": 'N/A',
         "languages": []
-    }
+    }   
 
-    # Extracting the stars count
+    branch = soup.find_all('a',href=lambda href: href and '/branches' in href)
+    if branch:
+        branch_count = branch[1].find('strong')
+        if branch_count:
+            repo_info['branches'] = branch_count.get_text(strip=True)
+
     watchers = soup.find('a',href=lambda href: href and '/watchers' in href)
-    print(watchers)
     if watchers:
         watchers_element = watchers.find('span')
         if not watchers_element:

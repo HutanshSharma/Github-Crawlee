@@ -12,6 +12,7 @@ def extract(soup):
     followers = followersanchor.select_one("span").get_text(strip=True)
     followinganchor = soup.find("a",{"href":f"https://github.com/{nickname}?tab=following"})
     following = followinganchor.select_one("span").get_text(strip=True)
+
     data['followers']=followers
     data['following']=following
 
