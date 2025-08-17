@@ -36,7 +36,7 @@ def extract(soup):
             star_tag = i.select_one("a.Link--muted")
             stars = star_tag.get_text(strip=True) if star_tag else 0
             languages = i.select_one("div.topics-row-container")
-            langanchor = i.select("a") if languages else []
+            langanchor = languages.select("a") if languages else []
             langlist = [j.get_text(strip=True) for j in langanchor]
 
             repo['name']=repo_name
@@ -46,7 +46,6 @@ def extract(soup):
             repo['most_used_language']=most_used_language
             repolist.append(repo)
         
-        data['total_public_repos'] = len(repolist)
         data['repos_list']=repolist
 
     return data

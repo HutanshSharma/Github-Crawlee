@@ -84,3 +84,14 @@ def most_stared():
     
     return jsonify(sorted_data)
 
+@app.route("/language/<lang>")
+def search_language(lang):
+    lang = lang.lower()
+    data = []
+    for i in repos_data:
+        if lang in i['most_used_language'].lower() or lang in i['languages']:
+            data.append(i)
+
+    return jsonify(data)
+
+

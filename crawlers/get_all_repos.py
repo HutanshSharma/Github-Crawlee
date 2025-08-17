@@ -14,7 +14,19 @@ def extract(soup):
                     description = repo_description.get_text(strip=True) if repo_description else ''
                     star_tag = i.select_one("a.Link--muted")
                     stars = star_tag.get_text(strip=True) if star_tag else 0
+                    lang_tag = i.select_one('span[itemprop="programmingLanguage"]')
+                    most_used_language = lang_tag.get_text(strip=True) if lang_tag else "N/A"
+                    languages = i.select_one("div.topics-row-container")
+                    langanchor = languages.select("a") if languages else []
+                    langlist = [j.get_text(strip=True).lower() for j in langanchor]
+                    updated_at = i.select_one("relative-time")["title"]
 
-                    data.append({'name':repo_name,'description':description,'link':repo_link,'stars':int(stars)})
+                    data.append({'name':repo_name,
+                                 'description':description,
+                                 'link':repo_link,
+                                 'stars':int(stars),
+                                 'most_used_language':most_used_language,
+                                 "languages":langlist,
+                                 "updated_at":updated_at})
 
     return data
