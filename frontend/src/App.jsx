@@ -1,35 +1,63 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import HomePage from './components/HomePage';
+import Dashboard from './components/Dashboard';
+import RepoDetail from './components/RepoDetail';
+import { mockData } from './data/mockData';
+import './index.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [currentPage, setCurrentPage] = useState('home');
+  const [userData, setUserData] = useState(null);
+  const [selectedRepo, setSelectedRepo] = useState(null);
+
+  const handleUserSubmit = (formData) => {
+    // In a real app, this would fetch data from your GitHub crawler API
+    setUserData({
+      ...mockData,
+      searchData: formData
+    });
+    setCurrentPage('dashboard');
+  };
+
+  const handleRepoSelect = (repoName) => {
+    const repo = mockData.repos.find(r => r.name === repoName);
+    setSelectedRepo(repo);
+    setCurrentPage('repo-detail');
+  };
+
+  const handleBackToDashboard = () => {
+    setCurrentPage('dashboard');
+    setSelectedRepo(null);
+  };
+
+  const handleBackToHome = () => {
+    setCurrentPage('home');
+    setUserData(null);
+    setSelectedRepo(null);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="min-h-screen bg-gradient-to-br from-dark-300 via-dark-200 to-dark-300">
+      {currentPage === 'home' && (
+        <HomePage onSubmit={handleUserSubmit} />
+      )}
+      
+      {currentPage === 'dashboard' && userData && (
+        <Dashboard 
+          userData={userData} 
+          onRepoSelect={handleRepoSelect}
+          onBackToHome={handleBackToHome}
+        />
+      )}
+      
+      {currentPage === 'repo-detail' && selectedRepo && (
+        <RepoDetail 
+          repo={selectedRepo} 
+          onBack={handleBackToDashboard}
+        />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
