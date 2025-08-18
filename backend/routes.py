@@ -8,6 +8,7 @@ from crawlers.commit import extract as commit_scrap
 from crawlers.pulse import extract as pulse_scrap
 from crawlers.get_all_repos import extract as get_repos
 from crawlers.readme import extract as read_me
+from readme_reader.skill_ext import skill_extract
 from backend import app
 
 repos_data = []
@@ -99,7 +100,8 @@ def search_language(lang):
 def readme(username,repository):
     link = f"https://raw.githubusercontent.com/{username}/{repository}/main/README.md"
     data = scrapper(link,read_me)
-    return jsonify(data)
+    skills = skill_extract(data)
+    return jsonify(skills)
 
 
 

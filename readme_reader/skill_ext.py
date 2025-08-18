@@ -1,7 +1,6 @@
 import spacy 
 from rapidfuzz import fuzz
 import re
-import json
 
 nlp = spacy.load("en_core_web_sm")
 
@@ -61,7 +60,6 @@ negation_words = ["no", "not", "without", "never", "lack of"]
 def skill_extract(paragraph, threshold = 80):
     paragraph = paragraph.lower()
     doc = nlp(paragraph)
-    print(doc)
     found_skills = []
 
     for skill in skill_dict:
@@ -80,15 +78,4 @@ def skill_extract(paragraph, threshold = 80):
 
     return list(set(found_skills)) # removing duplicates
 
-if __name__ == "__main__":
-    
-    test_paragraph = """I have experience in Pythn, SQL, c, and project management.
-                        I have no experience in Java. My leadership and communication skills are strong."""
-    
-    print("Paragraph:\n", test_paragraph)
-    skills = skill_extract(test_paragraph)
-
-    with open("extracted_skills", "w") as json_file:
-        json.dump(skills, json_file, indent = 4)
-    print("\nExtracted Skills:", skills)
 
