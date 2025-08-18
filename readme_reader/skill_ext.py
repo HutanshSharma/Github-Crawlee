@@ -78,8 +78,6 @@ def skill_extract(paragraph, threshold = 80):
                 if not re.search(pattern, paragraph):
                     found_skills.append(skill)
 
-
-
     return list(set(found_skills)) # removing duplicates
 
 if __name__ == "__main__":
