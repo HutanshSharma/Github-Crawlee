@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import jsonify
 from crawlers.main import scrapper
 from crawlers.profile import extract as profile_scrap
 from crawlers.pulls import extract as pull_scrap
@@ -7,6 +7,7 @@ from crawlers.issue import extract as issue_scrap
 from crawlers.commit import extract as commit_scrap
 from crawlers.pulse import extract as pulse_scrap
 from crawlers.get_all_repos import extract as get_repos
+from crawlers.readme import extract as read_me
 from backend import app
 
 repos_data = []
@@ -93,5 +94,12 @@ def search_language(lang):
             data.append(i)
 
     return jsonify(data)
+
+@app.route("/readme/<username>/<repository>")
+def readme(username,repository):
+    link = f"https://raw.githubusercontent.com/{username}/{repository}/main/README.md"
+    data = scrapper(link,read_me)
+    return jsonify(data)
+
 
 

@@ -61,7 +61,7 @@ return fullHTML;
 """
 
 # ---------- main scraping function ----------
-def scrapper(playlist_url, extract, max_wait=100,keyword = None):
+def scrapper(playlist_url, extract, max_wait=100):
     driver = build_driver()
     try:
         driver.get(playlist_url)
@@ -95,10 +95,7 @@ def scrapper(playlist_url, extract, max_wait=100,keyword = None):
 
     soup = BeautifulSoup(full_html, "html.parser")
     
-    if keyword:
-      data = extract(soup,keyword)
-    else:
-      data = extract(soup)
+    data = extract(soup)
 
     return data
 

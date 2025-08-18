@@ -12,7 +12,7 @@ def extract(soup):
                     repo_name = repo.get_text(strip=True)
                     repo_description = i.find("p",{"itemprop":"description"})
                     description = repo_description.get_text(strip=True) if repo_description else ''
-                    star_tag = i.select_one("a.Link--muted")
+                    star_tag = i.find("a",href=lambda href: href and '/stargazers' in href)
                     stars = star_tag.get_text(strip=True) if star_tag else 0
                     lang_tag = i.select_one('span[itemprop="programmingLanguage"]')
                     most_used_language = lang_tag.get_text(strip=True) if lang_tag else "N/A"
