@@ -17,14 +17,7 @@ const ProfileStats = ({ profile }) => {
       description: 'Following users'
     },
     {
-      label: 'Repositories',
-      value: profile.repos_list.length,
-      icon: '📁',
-      color: 'text-accent',
-      description: 'Total repositories'
-    },
-    {
-      label: 'Total Stars',
+      label: 'Latest Stars',
       value: profile.repos_list.reduce((acc, repo) => {
         const stars = typeof repo.stars === 'number' ? repo.stars : 0;
         return acc + stars;
@@ -54,7 +47,7 @@ const ProfileStats = ({ profile }) => {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
       {stats.map((stat, index) => (
         <div key={index} className="glass-morphism rounded-xl p-4 text-center card-hover">
           <div className="text-2xl mb-2">{stat.icon}</div>

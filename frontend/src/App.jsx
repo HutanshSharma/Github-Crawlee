@@ -14,7 +14,7 @@ function App() {
     // In a real app, this would fetch data from your GitHub crawler API
     setUserData({
       ...mockData,
-      searchData: formData
+      profile: formData
     });
     setCurrentPage('dashboard');
   };

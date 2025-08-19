@@ -10,6 +10,7 @@ import CommitFrequencyChart from './CommitFrequencyChart';
 import LanguageEvolutionChart from './LanguageEvolutionChart';
 
 const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
+  console.log(userData)
   const [searchTerm, setSearchTerm] = useState('');
   const [languageFilter, setLanguageFilter] = useState('');
 
@@ -44,7 +45,7 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
             <div className="flex items-center gap-4">
               <span className="text-gray-400">@{userData.profile.nickname}</span>
               <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm">
-                {userData.searchData.accountType === 'personal' ? '👤 Personal' : '🏢 Organization'}
+                {userData.profile.accountType === 'personal' ? '👤 Personal' : '🏢 Organization'}
               </span>
             </div>
           </div>
@@ -61,20 +62,20 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
 
         {/* Main Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <LanguageChart repos={userData.repos} />
-          <ActivityChart repos={userData.repos} />
+          <LanguageChart repos={userData.profile.repos_list} />
+          <ActivityChart repos={userData.profile.repos_list} />
         </div>
 
         {/* Additional Analytics */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <StarsChart repos={userData.repos} />
-          <RepoSizeChart repos={userData.repos} />
+          <StarsChart repos={userData.profile.repos_list} />
+          <RepoSizeChart repos={userData.profile.repos_list} />
         </div>
 
         {/* Advanced Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <CommitFrequencyChart repos={userData.repos} />
-          <LanguageEvolutionChart repos={userData.repos} />
+          <CommitFrequencyChart repos={userData.profile.repos_list} />
+          <LanguageEvolutionChart repos={userData.profile.repos_list} />
         </div>
 
         {/* Repository Insights Summary */}
@@ -83,7 +84,7 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-primary mb-2">
-                {userData.repos.reduce((acc, repo) => acc + (repo.stars || 0), 0)}
+                {userData.profile.repos_list.reduce((acc, repo) => acc + (repo.stars || 0), 0)}
               </div>
               <div className="text-gray-400">Total Stars</div>
             </div>
@@ -95,13 +96,13 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-accent mb-2">
-                {userData.repos.filter(repo => repo.description && repo.description.trim()).length}
+                {userData.profile.repos_list.filter(repo => repo.description && repo.description.trim()).length}
               </div>
               <div className="text-gray-400">Documented Repos</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-yellow-400 mb-2">
-                {userData.repos.filter(repo => new Date(repo.updated_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)).length}
+                {userData.profile.repos_list.filter(repo => new Date(repo.updated_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)).length}
               </div>
               <div className="text-gray-400">Recent Updates</div>
             </div>

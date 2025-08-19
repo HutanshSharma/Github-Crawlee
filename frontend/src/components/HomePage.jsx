@@ -11,13 +11,17 @@ const HomePage = ({ onSubmit }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.nickname.trim()) return;
-    
     setIsLoading(true);
-    // Simulate API call delay
-    setTimeout(() => {
-      onSubmit(formData);
-      setIsLoading(false);
-    }, 1500);
+
+    if(formData.accountType === 'personal'){
+      (async function handler(){
+        const response = await fetch(`http://localhost:5000/profile/${formData.nickname}`)
+        const resData = await response.json()
+        const data = {...resData,'accountType':formData.accountType}
+        onSubmit(data)
+        setIsLoading(false)
+      })()
+    }
   };
 
   const handleInputChange = (e) => {

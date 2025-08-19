@@ -33,7 +33,9 @@ def extract(soup):
             lang_tag = i.select_one('span[itemprop="programmingLanguage"]')
             most_used_language = lang_tag.get_text(strip=True) if lang_tag else "N/A"
             updated_at = i.select_one("relative-time")["title"]
-            star_tag = i.select_one("a.Link--muted")
+            description = i.select_one('p[itemprop="description"]')
+            description_text = description.get_text(strip=True) if description else ''
+            star_tag = i.find("a",href=lambda href: href and '/stargazers' in href)
             stars = star_tag.get_text(strip=True) if star_tag else 0
             languages = i.select_one("div.topics-row-container")
             langanchor = languages.select("a") if languages else []
@@ -41,9 +43,10 @@ def extract(soup):
 
             repo['name']=repo_name
             repo['updated_at']=updated_at
-            repo['stars']=stars
+            repo['stars']=int(stars)
             repo['languages']=langlist
             repo['most_used_language']=most_used_language
+            repo['description'] = description_text
             repolist.append(repo)
         
         data['repos_list']=repolist
