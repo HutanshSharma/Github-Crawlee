@@ -15,23 +15,23 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
   const [languageFilter, setLanguageFilter] = useState('');
 
   const filteredRepos = useMemo(() => {
-    return userData.repos.filter(repo => {
+    return userData.profile.repos_list.filter(repo => {
       const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            repo.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesLanguage = !languageFilter || repo.most_used_language === languageFilter;
       return matchesSearch && matchesLanguage;
     });
-  }, [userData.repos, searchTerm, languageFilter]);
+  }, [userData.profile.repos_list, searchTerm, languageFilter]);
 
   const allLanguages = useMemo(() => {
     const languages = new Set();
-    userData.repos.forEach(repo => {
+    userData.profile.repos_list.forEach(repo => {
       if (repo.most_used_language && repo.most_used_language !== 'N/A') {
         languages.add(repo.most_used_language);
       }
     });
     return Array.from(languages).sort();
-  }, [userData.repos]);
+  }, [userData.profile.repos_list]);
 
   return (
     <div className="min-h-screen p-6">

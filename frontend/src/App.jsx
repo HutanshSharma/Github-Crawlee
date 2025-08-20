@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import HomePage from './components/HomePage';
 import Dashboard from './components/Dashboard';
 import RepoDetail from './components/RepoDetail';
-import { mockData } from './data/mockData';
 import './index.css';
 
 function App() {
@@ -13,16 +12,37 @@ function App() {
   const handleUserSubmit = (formData) => {
     // In a real app, this would fetch data from your GitHub crawler API
     setUserData({
-      ...mockData,
       profile: formData
     });
     setCurrentPage('dashboard');
   };
 
   const handleRepoSelect = (repoName) => {
-    const repo = mockData.repos.find(r => r.name === repoName);
-    setSelectedRepo(repo);
-    setCurrentPage('repo-detail');
+    (async function handler(){
+      const urls = [
+        `http://localhost:5000/repo/${userData.profile.nickname}/${repoName}`,
+        `http://localhost:5000/pulls/${userData.profile.nickname}/${repoName}`,
+        `http://localhost:5000/issues/${userData.profile.nickname}/${repoName}`,
+        `http://localhost:5000/pulse/${userData.profile.nickname}/${repoName}`,
+        `http://localhost:5000/commits/${userData.profile.nickname}/${repoName}`
+      ];
+
+      const responses = await Promise.all(urls.map(url => fetch(url)));
+      const results = await Promise.all(responses.map(res => res.json()));
+      const data = {"repos":{...results[0]},
+                    "pulls":{...results[1]},
+                    "issues":{...results[2]},
+                    "pulse":{...results[3]},
+                    "commits":{...results[4]}}
+
+      console.log(data);
+      // setSelectedRepo()
+      // setCurrentPage('repo-detail')
+    })()
+    // const repo = mockData.repos.find(r => r.name === repoName);
+    // setSelectedRepo(repo);
+    // setCurrentPage('repo-detail');
+    console.log('something')
   };
 
   const handleBackToDashboard = () => {

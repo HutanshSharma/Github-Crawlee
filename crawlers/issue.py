@@ -10,7 +10,7 @@ def extract(soup):
         if anchor:
             open = anchor[0].select_one('span').get_text(strip=True)
             closed = anchor[1].select_one('span').get_text(strip=True)
-            issues['open'] = open
-            issues['closed'] = closed
+            issues['open'] = int(open)
+            issues['closed'] = int(closed)
 
     return issues

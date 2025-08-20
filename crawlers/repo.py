@@ -4,15 +4,17 @@ def extract(soup):
         "stars": "N/A",
         "forks": "N/A",
         "watchers": 'N/A',
+        "description": '',
         "branches": 'N/A',
-        "languages": []
+        "languages": [],
+        "topics":[]
     }   
 
     branch = soup.find_all('a',href=lambda href: href and '/branches' in href)
     if branch:
         branch_count = branch[1].find('strong')
         if branch_count:
-            repo_info['branches'] = branch_count.get_text(strip=True)
+            repo_info['branches'] = int(branch_count.get_text(strip=True))
 
     watchers = soup.find('a',href=lambda href: href and '/watchers' in href)
     if watchers:
@@ -20,7 +22,7 @@ def extract(soup):
         if not watchers_element:
             watchers_element = watchers.find('strong')
         if watchers_element:
-            repo_info['watchers'] = watchers_element.get_text(strip=True)
+            repo_info['watchers'] = int(watchers_element.get_text(strip=True))
     
     fork_element = soup.find('a',href=lambda href: href and '/forks' in href)
     if fork_element:
@@ -28,7 +30,7 @@ def extract(soup):
         if not forks_count_element:
             forks_count_element = fork_element.find('strong')
         if forks_count_element:
-            repo_info['forks'] = forks_count_element.get_text(strip=True)
+            repo_info['forks'] = int(forks_count_element.get_text(strip=True))
 
     stars_element = soup.find('a', href=lambda href: href and '/stargazers' in href)
     if stars_element:
@@ -36,7 +38,7 @@ def extract(soup):
         if not stars_count_element:
             stars_count_element = stars_element.find('strong')
         if stars_count_element:
-            repo_info['stars'] = stars_count_element.get_text(strip=True)
+            repo_info['stars'] = int(stars_count_element.get_text(strip=True))
 
     temp = soup.find('h2',string='Languages')
     if temp:
@@ -51,4 +53,21 @@ def extract(soup):
                     'percentage': language_percentage
                 })
 
+    sidebar = soup.find('div',class_="Layout-sidebar")
+    if sidebar:
+        p = sidebar.find('p')
+        if p:
+            description = p.get_text(strip=True)
+            repo_info['description'] = description
+        topic_a = sidebar.find_all('a',href=lambda href: href and '/topics' in href)
+        topics = []
+        if topic_a:
+            for i in topic_a:
+                text = i.get_text(strip=True)
+                topics.append(text)
+            
+            repo_info['topics'] = topics
+            
+
     return repo_info
+

@@ -11,16 +11,16 @@ def extract(soup):
         if anchor:
             open = anchor[0].get_text(strip=True)
             closed = anchor[1].get_text(strip=True)
-            pulls['open'] = open.split(' ')[0]
-            pulls['closed'] = closed.split(' ')[0]
+            pulls['open'] = int(open.split(' ')[0])
+            pulls['closed'] = int(closed.split(' ')[0])
 
     milestones = soup.find('a',href=lambda href: href and '/milestones' in href)
     if milestones:
         milestones_number = milestones.select_one('span').get_text(strip=True)
-        pulls['milestones'] = milestones_number
+        pulls['milestones'] = int(milestones_number)
     labels = soup.find('a',href=lambda href: href and '/labels' in href)
     if labels:
         labels_number = labels.select_one('span').get_text(strip=True)
-        pulls['labels'] = labels_number
+        pulls['labels'] = int(labels_number)
     
     return pulls
