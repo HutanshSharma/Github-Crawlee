@@ -29,6 +29,7 @@ def pulls(nickname,repository):
 def repo(nickname,repository):
     link = f"https://github.com/{nickname}/{repository}"
     data = scrapper(link,repo_scrap)
+    data["link"] = link
     return jsonify(data)
 
 @app.route('/issues/<nickname>/<repository>')

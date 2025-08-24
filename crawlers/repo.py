@@ -1,3 +1,15 @@
+def parse_number(s: str) -> float:
+    s = s.strip().lower()
+    multipliers = {
+        'k': 1_000,
+        'm': 1_000_000,
+        'b': 1_000_000_000,
+    }
+    if s[-1] in multipliers:
+        return float(s[:-1]) * multipliers[s[-1]]
+    else:
+        return float(s.replace(",", ""))
+
 def extract(soup):
     
     repo_info = {
@@ -14,7 +26,7 @@ def extract(soup):
     if branch:
         branch_count = branch[1].find('strong')
         if branch_count:
-            repo_info['branches'] = int(branch_count.get_text(strip=True))
+            repo_info['branches'] = parse_number(branch_count.get_text(strip=True))
 
     watchers = soup.find('a',href=lambda href: href and '/watchers' in href)
     if watchers:
@@ -22,7 +34,7 @@ def extract(soup):
         if not watchers_element:
             watchers_element = watchers.find('strong')
         if watchers_element:
-            repo_info['watchers'] = int(watchers_element.get_text(strip=True))
+            repo_info['watchers'] = parse_number(watchers_element.get_text(strip=True))
     
     fork_element = soup.find('a',href=lambda href: href and '/forks' in href)
     if fork_element:
@@ -30,7 +42,7 @@ def extract(soup):
         if not forks_count_element:
             forks_count_element = fork_element.find('strong')
         if forks_count_element:
-            repo_info['forks'] = int(forks_count_element.get_text(strip=True))
+            repo_info['forks'] = parse_number(forks_count_element.get_text(strip=True))
 
     stars_element = soup.find('a', href=lambda href: href and '/stargazers' in href)
     if stars_element:
@@ -38,7 +50,7 @@ def extract(soup):
         if not stars_count_element:
             stars_count_element = stars_element.find('strong')
         if stars_count_element:
-            repo_info['stars'] = int(stars_count_element.get_text(strip=True))
+            repo_info['stars'] = parse_number(stars_count_element.get_text(strip=True))
 
     temp = soup.find('h2',string='Languages')
     if temp:

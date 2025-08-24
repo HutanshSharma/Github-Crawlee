@@ -1,3 +1,15 @@
+def parse_number(s: str) -> float:
+    s = s.strip().lower()
+    multipliers = {
+        'k': 1_000,
+        'm': 1_000_000,
+        'b': 1_000_000_000,
+    }
+    if s[-1] in multipliers:
+        return float(s[:-1]) * multipliers[s[-1]]
+    else:
+        return float(s.replace(",", ""))
+
 def extract(soup):
     data = {}
 
@@ -36,14 +48,14 @@ def extract(soup):
             description = i.select_one('p[itemprop="description"]')
             description_text = description.get_text(strip=True) if description else ''
             star_tag = i.find("a",href=lambda href: href and '/stargazers' in href)
-            stars = star_tag.get_text(strip=True) if star_tag else 0
+            stars = parse_number(star_tag.get_text(strip=True)) if star_tag else 0
             languages = i.select_one("div.topics-row-container")
             langanchor = languages.select("a") if languages else []
             langlist = [j.get_text(strip=True) for j in langanchor]
 
             repo['name']=repo_name
             repo['updated_at']=updated_at
-            repo['stars']=int(stars)
+            repo['stars']=stars
             repo['languages']=langlist
             repo['most_used_language']=most_used_language
             repo['description'] = description_text

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import SearchBar from './SearchBar';
 import RepoCard from './RepoCard';
 import ProfileStats from './ProfileStats';
@@ -9,8 +9,7 @@ import RepoSizeChart from './RepoSizeChart';
 import CommitFrequencyChart from './CommitFrequencyChart';
 import LanguageEvolutionChart from './LanguageEvolutionChart';
 
-const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
-  console.log(userData)
+const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [languageFilter, setLanguageFilter] = useState('');
 
@@ -109,20 +108,24 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
           </div>
         </div>
 
-        {/* Search and Filter */}
-        <SearchBar
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          languageFilter={languageFilter}
-          onLanguageChange={setLanguageFilter}
-          languages={allLanguages}
-        />
+        <div className='flex flex-col gap-5 glass-morphism rounded-xl p-12'>
+          <h2 className="text-2xl font-bold text-white">Search Through Repositories</h2>
+          <p>The search process may take some time, depending on the number of repositories being scanned. Larger sets of repositories will naturally require more processing time.</p>
+          <button onClick={()=>{
+                              loadall()
+                              onLoad('loading')
+                            }}
+            className='w-full bg-gradient-to-r from-primary to-secondary py-4 px-6 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100'>
+            Start Searching
+          </button>
+        </div>
+        
 
         {/* Repositories Grid */}
         <div className="mt-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-white">
-              Repositories ({filteredRepos.length})
+              Latest Repositories ({filteredRepos.length})
             </h2>
             <div className="flex items-center gap-4 text-sm text-gray-400">
               <span className="flex items-center">
@@ -148,7 +151,10 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome }) => {
                 <RepoCard
                   key={index}
                   repo={repo}
-                  onClick={() => onRepoSelect(repo.name)}
+                  onClick={() =>{
+                    onRepoSelect(repo.name)
+                    onLoad('loading')
+                  }}
                 />
               ))}
             </div>

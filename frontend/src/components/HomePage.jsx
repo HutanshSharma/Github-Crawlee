@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-const HomePage = ({ onSubmit }) => {
+const HomePage = ({ onSubmit, onLoad }) => {
   const [formData, setFormData] = useState({
     nickname: '',
     accountType: 'personal'
   });
   
-  const [isLoading, setIsLoading] = useState(false);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.nickname.trim()) return;
-    setIsLoading(true);
+    onLoad('loading')
 
     if(formData.accountType === 'personal'){
       (async function handler(){
@@ -19,7 +17,6 @@ const HomePage = ({ onSubmit }) => {
         const resData = await response.json()
         const data = {...resData,'accountType':formData.accountType}
         onSubmit(data)
-        setIsLoading(false)
       })()
     }
   };
@@ -161,17 +158,9 @@ const HomePage = ({ onSubmit }) => {
 
                 <button
                   type="submit"
-                  disabled={isLoading || !formData.nickname.trim()}
                   className="w-full bg-gradient-to-r from-primary to-secondary py-4 px-6 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
                 >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center">
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-3"></div>
-                      Analyzing Profile...
-                    </div>
-                  ) : (
-                    'Start Analysis'
-                  )}
+                  Start Analysis
                 </button>
               </form>
             </div>

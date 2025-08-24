@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import HomePage from './components/HomePage';
 import Dashboard from './components/Dashboard';
 import RepoDetail from './components/RepoDetail';
+import Loading from './components/Loading';
 import './index.css';
+import Search from './components/SearchComponent';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [userData, setUserData] = useState(null);
   const [selectedRepo, setSelectedRepo] = useState(null);
+  const [allrepos, setallrepos] = useState(null);
 
   const handleUserSubmit = (formData) => {
-    // In a real app, this would fetch data from your GitHub crawler API
     setUserData({
       profile: formData
     });
@@ -29,21 +31,25 @@ function App() {
 
       const responses = await Promise.all(urls.map(url => fetch(url)));
       const results = await Promise.all(responses.map(res => res.json()));
-      const data = {"repos":{...results[0]},
+      const data = {"repoData":{...results[0],'repoName':repoName},
                     "pulls":{...results[1]},
                     "issues":{...results[2]},
                     "pulse":{...results[3]},
                     "commits":{...results[4]}}
-
-      console.log(data);
-      // setSelectedRepo()
-      // setCurrentPage('repo-detail')
+      setSelectedRepo(data)
+      setCurrentPage('repo-detail')
     })()
-    // const repo = mockData.repos.find(r => r.name === repoName);
-    // setSelectedRepo(repo);
-    // setCurrentPage('repo-detail');
-    console.log('something')
   };
+
+  const handlereposearch = () => {
+    (async function handler(){
+      const response = await fetch(`http://localhost:5000/home/${userData.profile.nickname}`)
+      const resData = await response.json()
+      setallrepos(resData)
+      setCurrentPage('repos')
+      console.log(resData)
+    })()
+  }
 
   const handleBackToDashboard = () => {
     setCurrentPage('dashboard');
@@ -59,16 +65,23 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-300 via-dark-200 to-dark-300">
       {currentPage === 'home' && (
-        <HomePage onSubmit={handleUserSubmit} />
+        <HomePage onSubmit={handleUserSubmit} onLoad = {setCurrentPage}/>
       )}
+
+      {currentPage === 'loading' && 
+        <Loading />}
       
       {currentPage === 'dashboard' && userData && (
         <Dashboard 
           userData={userData} 
           onRepoSelect={handleRepoSelect}
           onBackToHome={handleBackToHome}
+          onLoad = {setCurrentPage}
+          loadall = {handlereposearch}
         />
       )}
+
+      {currentPage === 'repos' && <Search repos = {allrepos} onRepoSelect={handleRepoSelect} onLoad = {setCurrentPage}/>}
       
       {currentPage === 'repo-detail' && selectedRepo && (
         <RepoDetail 
