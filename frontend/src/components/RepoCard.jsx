@@ -1,5 +1,3 @@
-import React from 'react';
-
 const RepoCard = ({ repo, onClick }) => {
   const getLanguageColor = (language) => {
     const colors = {

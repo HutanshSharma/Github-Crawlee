@@ -1,4 +1,5 @@
 from flask import jsonify
+import shutil
 from crawlers.main import scrapper
 from crawlers.profile import extract as profile_scrap
 from crawlers.pulls import extract as pull_scrap
@@ -9,6 +10,7 @@ from crawlers.pulse import extract as pulse_scrap
 from crawlers.get_all_repos import extract as get_repos
 from crawlers.readme import extract as read_me
 from readme_reader.skill_ext import skill_extract
+from backend.file_structure import get_repo_structure
 from backend import app
 
 repos_data = []
@@ -103,6 +105,12 @@ def readme(username,repository):
     data = scrapper(link,read_me)
     skills = skill_extract(data)
     return jsonify(skills)
+
+@app.route("/repo-structure/<username>/<repo>")
+def repo_structure(username,repo):
+    data = get_repo_structure(username,repo)
+    shutil.rmtree('repo_temp')
+    return jsonify(data)
 
 
 

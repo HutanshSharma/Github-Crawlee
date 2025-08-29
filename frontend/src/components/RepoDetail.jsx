@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { Bar, Line, Doughnut, Radar, Scatter, PolarArea } from 'react-chartjs-2';
+import { Bar, Line, Doughnut, Radar, PolarArea } from 'react-chartjs-2';
+import RadialFileMap from './RepoGraph';
+import repoData from './tree.json'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -20,16 +22,17 @@ ChartJS.register(
   LineElement, ArcElement, RadialLinearScale, Title, Tooltip, Legend, Filler
 );
 
-const RepoDetail = ({ repo, onBack }) => {
+const RepoDetail = ({ repo, onBack, prevPage }) => {
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: '📊' },
     { id: 'languages', label: 'Languages', icon: '💻' },
+    { id: 'files', label: 'File Structure', icon: '📂'},
     { id: 'activity', label: 'Activity', icon: '📈' },
     { id: 'issues', label: 'Issues & PRs', icon: '🐛' },
     { id: 'pulse', label: 'Pulse', icon: '💓' },
-    { id: 'analytics', label: 'Analytics', icon: '🔍' }
+    { id: 'analytics', label: 'Analytics', icon: '🔍' },
   ];
 
   const getLanguageColor = (language) => {
@@ -170,31 +173,6 @@ const RepoDetail = ({ repo, onBack }) => {
           bodyColor: '#D1D5DB'
         }
       }
-    };
-
-    const barData = {
-      labels: repo.repoData.languages.map(lang => lang.name),
-      datasets: [{
-        label: 'Percentage',
-        data: repo.repoData.languages.map(lang => parseFloat(lang.percentage.replace('%', ''))),
-        backgroundColor: repo.repoData.languages.map(lang => getLanguageColor(lang.name)),
-        borderRadius: 8,
-        borderSkipped: false,
-      }]
-    };
-
-    const radarData = {
-      labels: repo.repoData.languages.map(lang => lang.name),
-      datasets: [{
-        label: 'Language Usage',
-        data: repo.repoData.languages.map(lang => parseFloat(lang.percentage.replace('%', ''))),
-        backgroundColor: 'rgba(59, 130, 246, 0.2)',
-        borderColor: '#3B82F6',
-        borderWidth: 2,
-        pointBackgroundColor: repo.repoData.languages.map(lang => getLanguageColor(lang.name)),
-        pointBorderColor: '#ffffff',
-        pointBorderWidth: 2
-      }]
     };
 
     const polarData = {
@@ -780,6 +758,7 @@ const RepoDetail = ({ repo, onBack }) => {
       case 'issues': return renderIssuesAndPRs();
       case 'pulse': return renderPulse();
       case 'analytics': return renderAnalytics();
+      case 'files': return <RadialFileMap data={repo.filesData} />;
       default: return renderOverview();
     }
   };
@@ -810,7 +789,7 @@ const RepoDetail = ({ repo, onBack }) => {
             onClick={onBack}
             className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl transition-all duration-300"
           >
-            ← Back to Dashboard
+            ← Back to {prevPage==='dashboard' ? 'Dashboard':'Search'}
           </button>
         </div>
 

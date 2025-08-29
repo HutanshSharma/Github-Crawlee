@@ -1,5 +1,4 @@
-import { useState, useMemo } from 'react';
-import SearchBar from './SearchBar';
+import { useMemo } from 'react';
 import RepoCard from './RepoCard';
 import ProfileStats from './ProfileStats';
 import LanguageChart from './LanguageChart';
@@ -9,18 +8,8 @@ import RepoSizeChart from './RepoSizeChart';
 import CommitFrequencyChart from './CommitFrequencyChart';
 import LanguageEvolutionChart from './LanguageEvolutionChart';
 
-const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall }) => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [languageFilter, setLanguageFilter] = useState('');
-
-  const filteredRepos = useMemo(() => {
-    return userData.profile.repos_list.filter(repo => {
-      const matchesSearch = repo.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           repo.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesLanguage = !languageFilter || repo.most_used_language === languageFilter;
-      return matchesSearch && matchesLanguage;
-    });
-  }, [userData.profile.repos_list, searchTerm, languageFilter]);
+const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall, isloaded, setPrevPage}) => {
+  const filteredRepos = userData.profile.repos_list
 
   const allLanguages = useMemo(() => {
     const languages = new Set();
@@ -110,13 +99,19 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall }) =>
 
         <div className='flex flex-col gap-5 glass-morphism rounded-xl p-12'>
           <h2 className="text-2xl font-bold text-white">Search Through Repositories</h2>
-          <p>The search process may take some time, depending on the number of repositories being scanned. Larger sets of repositories will naturally require more processing time.</p>
+          {!isloaded && <p>The search process may take some time, depending on the number of repositories being scanned. Larger sets of repositories will naturally require more processing time.</p>}
+          {isloaded && <p>Repos data is available search through them</p>}
           <button onClick={()=>{
-                              loadall()
-                              onLoad('loading')
+                              if(!isloaded){
+                                loadall()
+                                onLoad('loading')
+                              }
+                              else{
+                                onLoad('repos')
+                              }
                             }}
             className='w-full bg-gradient-to-r from-primary to-secondary py-4 px-6 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100'>
-            Start Searching
+            {!isloaded ? 'Start Searching':'Search'}
           </button>
         </div>
         
@@ -154,6 +149,7 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall }) =>
                   onClick={() =>{
                     onRepoSelect(repo.name)
                     onLoad('loading')
+                    setPrevPage('dashboard')
                   }}
                 />
               ))}
