@@ -6,7 +6,6 @@ import RepoDetail from './components/RepoDetail';
 import Loading from './components/Loading';
 import './index.css';
 import Search from './components/SearchComponent';
-import { Home } from 'lucide-react';
 
 function ProtectedRoute({data, children ,prevPage=null}){
   if(!data && !prevPage){

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useNavigate } from "react-router-dom"
+import { User } from "lucide-react"
 import RepoCard from './RepoCard';
 import ProfileStats from './ProfileStats';
 import LanguageChart from './LanguageChart';
@@ -34,8 +35,9 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome, loadall, isloaded, se
             </h1>
             <div className="flex items-center gap-4">
               <span className="text-gray-400">@{userData.profile.nickname}</span>
-              <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm">
-                {userData.profile.accountType === 'personal' ? '👤 Personal' : '🏢 Organization'}
+              <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-md flex gap-2">
+                <User></User>
+                <div>Personal</div>
               </span>
             </div>
           </div>

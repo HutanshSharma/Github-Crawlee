@@ -20,12 +20,12 @@ export default function Search({ repos, onRepoSelect, onBack, setPrevPage }) {
   return (
     <div className="min-h-screen bg-gray-900 px-6 md:px-12 py-8">
         <div className="flex justify-between pb-10">
-            <h2 className="text-3xl font-bold text-white mb-6">
+            <h2 className="text-3xl font-bold text-white mb-6 gradient-text">
                 Search through Repositories
             </h2>
             <button
                 onClick={onBack}
-                className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-xl transition-all duration-300"
+                className="px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded-xl transition-all duration-300"
                 >
                 ← Back to Dashboard
                 </button>
@@ -47,7 +47,7 @@ export default function Search({ repos, onRepoSelect, onBack, setPrevPage }) {
             if(e.target.value==='') setcurrentrepos(repos)
             setKeyword(e.target.value)}}
           placeholder="Type here..."
-          className="flex-1 p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-2 focus:ring-blue-500"
+          className="w-full md:flex-1 p-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:ring-2 focus:ring-blue-500"
         />
         <button
           onClick={handleSearch}

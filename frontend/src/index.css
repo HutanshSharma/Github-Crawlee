@@ -23,6 +23,10 @@ body {
   background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
 }
 
+.bgbody {
+  background: linear-gradient(-45deg, #1a202c 0%, #0f172a 25%, #020617 50%, #0f172a 75%, #1a202c 100%);
+}
+
 .glass-morphism {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
@@ -45,7 +49,6 @@ body {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -91,7 +94,6 @@ body {
   background-size: 200px 100%;
 }
 
-/* Custom pulse animation for dots */
 @keyframes custom-pulse {
   0%, 100% {
     opacity: 1;
@@ -107,7 +109,6 @@ body {
   animation: custom-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Custom spin animation */
 @keyframes spin {
   from {
     transform: rotate(0deg);

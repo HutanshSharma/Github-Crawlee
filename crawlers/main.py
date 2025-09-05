@@ -26,7 +26,6 @@ def build_driver():
 
     return driver
 
-# ---------- JS to grab full HTML including open shadowRoots ----------
 GET_FULL_DOM_JS = r"""
 function getShadowDOMContent(element) {
   let content = "";
@@ -60,7 +59,6 @@ all.forEach(el => {
 return fullHTML;
 """
 
-# ---------- main scraping function ----------
 def scrapper(playlist_url, extract, max_wait=100):
     driver = build_driver()
     try:

@@ -1,3 +1,5 @@
+import {Star} from 'lucide-react'
+
 const RepoCard = ({ repo, onClick }) => {
   const getLanguageColor = (language) => {
     const colors = {
@@ -35,7 +37,7 @@ const RepoCard = ({ repo, onClick }) => {
           {repo.name}
         </h3>
         <div className="flex items-center text-yellow-400 ml-4">
-          <span className="text-sm">⭐</span>
+          <span className="text-sm"><Star size={'15px'}/></span>
           <span className="ml-1 text-sm">{repo.stars}</span>
         </div>
       </div>

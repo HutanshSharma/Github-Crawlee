@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+import { GitGraphIcon, Computer, Search, Star,Rocket, EyeClosedIcon, User} from "lucide-react"
 
 const HomePage = ({ onSubmit }) => {
   const navigate = useNavigate()
@@ -32,32 +33,32 @@ const HomePage = ({ onSubmit }) => {
 
   const features = [
     {
-      icon: '📊',
+      icon: Computer,
       title: 'Repository Analytics',
       description: 'Comprehensive analysis of all repositories with detailed statistics and trends'
     },
     {
-      icon: '💻',
+      icon: EyeClosedIcon,
       title: 'Language Insights',
       description: 'Visual breakdown of programming languages used across all projects'
     },
     {
-      icon: '📈',
+      icon: GitGraphIcon,
       title: 'Activity Tracking',
       description: 'Monitor commit patterns, contribution frequency, and development activity'
     },
     {
-      icon: '🔍',
+      icon: Search,
       title: 'Advanced Search',
       description: 'Filter repositories by language, keywords, and various criteria'
     },
     {
-      icon: '⭐',
+      icon: Star,
       title: 'Performance Metrics',
       description: 'Track stars, forks, watchers, and repository engagement metrics'
     },
     {
-      icon: '🚀',
+      icon: Rocket,
       title: 'Project Insights',
       description: 'Deep dive into individual repositories with detailed analytics tabs'
     }
@@ -65,13 +66,12 @@ const HomePage = ({ onSubmit }) => {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-secondary/10 to-accent/20"></div>
+        <div className="absolute inset-0 bgbody"></div>
         <div className="relative max-w-7xl mx-auto px-6 py-20">
           <div className="text-center mb-16">
             <h1 className="text-6xl md:text-7xl font-bold gradient-text mb-6 animate-fade-in">
-              GitHub Crawlee
+              GitCrawlee
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto animate-slide-up">
               Unlock powerful insights from any GitHub profile with beautiful visualizations, 
@@ -93,7 +93,6 @@ const HomePage = ({ onSubmit }) => {
             </div>
           </div>
 
-          {/* Form Section */}
           <div className="max-w-md mx-auto mb-20">
             <div className="glass-morphism rounded-3xl p-8 animate-slide-up">
               <form onSubmit={handleSubmit} className="space-y-6">
@@ -113,49 +112,11 @@ const HomePage = ({ onSubmit }) => {
                   />
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-3">
-                    Account Type
+                <div className='flex gap-5 px-4'>
+                  <div className="mb-2"><User size={'25px'} className=' text-red-300'/></div>
+                  <label className="block text-sm font-medium text-red-300 mb-3">
+                    Only Personal Accounts are supported.
                   </label>
-                  <div className="grid grid-cols-2 gap-3">
-                    <label className="relative">
-                      <input
-                        type="radio"
-                        name="accountType"
-                        value="personal"
-                        checked={formData.accountType === 'personal'}
-                        onChange={handleInputChange}
-                        className="sr-only"
-                      />
-                      <div className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 text-center ${
-                        formData.accountType === 'personal'
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-gray-600 text-gray-400 hover:border-gray-500'
-                      }`}>
-                        <div className="text-2xl mb-2">👤</div>
-                        <div className="font-medium">Personal</div>
-                      </div>
-                    </label>
-                    
-                    <label className="relative">
-                      <input
-                        type="radio"
-                        name="accountType"
-                        value="organization"
-                        checked={formData.accountType === 'organization'}
-                        onChange={handleInputChange}
-                        className="sr-only"
-                      />
-                      <div className={`p-4 rounded-xl border-2 cursor-pointer transition-all duration-300 text-center ${
-                        formData.accountType === 'organization'
-                          ? 'border-primary bg-primary/10 text-primary'
-                          : 'border-gray-600 text-gray-400 hover:border-gray-500'
-                      }`}>
-                        <div className="text-2xl mb-2">🏢</div>
-                        <div className="font-medium">Organization</div>
-                      </div>
-                    </label>
-                  </div>
                 </div>
 
                 <button
@@ -170,7 +131,6 @@ const HomePage = ({ onSubmit }) => {
         </div>
       </div>
 
-      {/* Features Section */}
       <div className="max-w-7xl mx-auto px-6 py-20">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-white mb-4">Powerful Analytics Features</h2>
@@ -186,7 +146,7 @@ const HomePage = ({ onSubmit }) => {
               className="glass-morphism rounded-xl p-6 card-hover animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="text-4xl mb-4">{feature.icon}</div>
+              <div className="text-4xl mb-4"><feature.icon className="w-8 h-8 text-white"/></div>
               <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
               <p className="text-gray-400 leading-relaxed">{feature.description}</p>
             </div>
@@ -194,7 +154,6 @@ const HomePage = ({ onSubmit }) => {
         </div>
       </div>
 
-      {/* Stats Preview Section */}
       <div className="max-w-7xl mx-auto px-6 py-20">
         <div className="glass-morphism rounded-3xl p-12">
           <div className="text-center mb-12">
@@ -205,23 +164,23 @@ const HomePage = ({ onSubmit }) => {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">📊</div>
+            <div className="text-center flex flex-col items-center">
+              <GitGraphIcon size={'40px'} className="font-bold text-primary mb-2"/>
               <div className="text-2xl font-bold text-white mb-1">Repository</div>
               <div className="text-gray-400">Statistics</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-secondary mb-2">💻</div>
+            <div className="text-center flex flex-col items-center">
+              <Computer size={'40px'} className="text-3xl font-bold text-secondary mb-2"/>
               <div className="text-2xl font-bold text-white mb-1">Language</div>
               <div className="text-gray-400">Distribution</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-accent mb-2">📈</div>
+            <div className="text-center flex flex-col items-center">
+              <Rocket size={'40px'} className="text-3xl font-bold text-accent mb-2"/>
               <div className="text-2xl font-bold text-white mb-1">Activity</div>
               <div className="text-gray-400">Patterns</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-yellow-400 mb-2">⭐</div>
+            <div className="text-center flex flex-col items-center">
+              <Star size={'40px'} className="text-3xl font-bold text-yellow-400 mb-2"/>
               <div className="text-2xl font-bold text-white mb-1">Engagement</div>
               <div className="text-gray-400">Metrics</div>
             </div>
@@ -229,7 +188,6 @@ const HomePage = ({ onSubmit }) => {
         </div>
       </div>
 
-      {/* Footer */}
       <div className="text-center py-12 text-gray-500">
         <p>Enter a GitHub username above to start exploring comprehensive profile analytics</p>
       </div>

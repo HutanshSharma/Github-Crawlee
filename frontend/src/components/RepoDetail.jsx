@@ -15,6 +15,7 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import { ChartColumnBig, Computer, FolderOpen,SquareActivity,BadgeAlert,HeartPulse, ChartPie,Link} from "lucide-react"
 
 ChartJS.register(
   CategoryScale, LinearScale, BarElement, PointElement, 
@@ -25,13 +26,13 @@ const RepoDetail = ({ repo, onBack, prevPage }) => {
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'languages', label: 'Languages', icon: '💻' },
-    { id: 'files', label: 'File Structure', icon: '📂'},
-    { id: 'activity', label: 'Activity', icon: '📈' },
-    { id: 'issues', label: 'Issues & PRs', icon: '🐛' },
-    { id: 'pulse', label: 'Pulse', icon: '💓' },
-    { id: 'analytics', label: 'Analytics', icon: '🔍' },
+    { id: 'overview', label: 'Overview', icon: ChartColumnBig, color:'text-emerald-500' },
+    { id: 'languages', label: 'Languages', icon: Computer, color:'text-indigo-500'},
+    { id: 'files', label: 'File Structure', icon: FolderOpen, color:'text-yellow-200'},
+    { id: 'activity', label: 'Activity', icon: SquareActivity, color:'text-teal-300'},
+    { id: 'issues', label: 'Issues & PRs', icon: BadgeAlert, color:'text-red-600'},
+    { id: 'pulse', label: 'Pulse', icon: HeartPulse, color:'text-rose-300'},
+    { id: 'analytics', label: 'Analytics', icon: ChartPie, color:'text-orange-400'},
   ];
 
   const getLanguageColor = (language) => {
@@ -775,8 +776,8 @@ const RepoDetail = ({ repo, onBack, prevPage }) => {
             </p>
             <div className="flex items-center gap-4 mt-2">
               <a href={repo.repoData.link} target="_blank" rel="noopener noreferrer" 
-                 className="text-primary hover:text-blue-300 transition-colors text-sm">
-                🔗 View on GitHub
+                 className="text-primary hover:text-blue-300 transition-colors text-sm flex gap-2">
+                <Link size={'20px'}/> <div>View on GitHub</div>
               </a>
               <span className="text-gray-500 text-sm">
                 {repo.repoData.languages.length} languages • {Object.keys(repo.commits).length} active days
@@ -797,14 +798,14 @@ const RepoDetail = ({ repo, onBack, prevPage }) => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
+              className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 flex ${
                 activeTab === tab.id
                   ? 'bg-primary text-white'
                   : 'glass-morphism text-gray-300 hover:text-white'
               }`}
             >
-              <span className="mr-2">{tab.icon}</span>
-              {tab.label}
+              <span className="mr-2"><tab.icon size={'20px'} className={`${tab.color}`}/></span>
+              <div>{tab.label}</div>
             </button>
           ))}
         </div>
