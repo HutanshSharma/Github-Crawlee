@@ -4,7 +4,6 @@ import io
 import os
 
 def build_tree(path):
-    """Recursively build file tree as nested dict."""
     tree = {}
     for item in os.listdir(path):
         item_path = os.path.join(path, item)

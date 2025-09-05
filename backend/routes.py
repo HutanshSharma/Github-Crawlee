@@ -9,7 +9,6 @@ from crawlers.commit import extract as commit_scrap
 from crawlers.pulse import extract as pulse_scrap
 from crawlers.get_all_repos import extract as get_repos
 from crawlers.readme import extract as read_me
-from readme_reader.skill_ext import skill_extract
 from backend.file_structure import get_repo_structure
 from backend import app
 
@@ -98,13 +97,6 @@ def search_language(lang):
             data.append(i)
 
     return jsonify(data)
-
-@app.route("/readme/<username>/<repository>")
-def readme(username,repository):
-    link = f"https://raw.githubusercontent.com/{username}/{repository}/main/README.md"
-    data = scrapper(link,read_me)
-    skills = skill_extract(data)
-    return jsonify(skills)
 
 @app.route("/repo-structure/<username>/<repo>")
 def repo_structure(username,repo):

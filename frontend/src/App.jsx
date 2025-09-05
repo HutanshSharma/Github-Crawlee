@@ -66,6 +66,7 @@ function App() {
 
   const handleBackToHome = () => {
     setCurrentPage('home');
+    setisLoaded(false)
     setUserData(null);
     setSelectedRepo(null);
   };
