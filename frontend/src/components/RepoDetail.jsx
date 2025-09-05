@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Bar, Line, Doughnut, Radar, PolarArea } from 'react-chartjs-2';
 import RadialFileMap from './RepoGraph';
-import repoData from './tree.json'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -327,7 +326,6 @@ const RepoDetail = ({ repo, onBack, prevPage }) => {
   };
 
   const renderIssuesAndPRs = () => {
-    // Issues vs PRs comparison chart
     const comparisonData = {
       labels: ['Issues', 'Pull Requests'],
       datasets: [

@@ -1,7 +1,10 @@
 import { useState } from "react";
 import RepoCard from "./RepoCard";
+import { useNavigate } from "react-router-dom"
 
-export default function Search({ repos, onRepoSelect, onLoad, onBack, setPrevPage }) {
+export default function Search({ repos, onRepoSelect, onBack, setPrevPage }) {
+  const navigate = useNavigate()
+
   const [searchby, setsearchby] = useState("language");
   const [keyword, setKeyword] = useState("");
   const [currentrepos, setcurrentrepos] = useState(repos)
@@ -87,7 +90,7 @@ export default function Search({ repos, onRepoSelect, onLoad, onBack, setPrevPag
               repo={repo}
               onClick={() => {
                 onRepoSelect(repo.name);
-                onLoad("loading");
+                navigate("/loading");
                 setPrevPage('search')
               }}
             />

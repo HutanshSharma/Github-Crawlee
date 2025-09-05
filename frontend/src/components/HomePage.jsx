@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 
-const HomePage = ({ onSubmit, onLoad }) => {
+const HomePage = ({ onSubmit }) => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     nickname: '',
     accountType: 'personal'
@@ -9,7 +11,7 @@ const HomePage = ({ onSubmit, onLoad }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.nickname.trim()) return;
-    onLoad('loading')
+    navigate('loading')
 
     if(formData.accountType === 'personal'){
       (async function handler(){
@@ -69,7 +71,7 @@ const HomePage = ({ onSubmit, onLoad }) => {
         <div className="relative max-w-7xl mx-auto px-6 py-20">
           <div className="text-center mb-16">
             <h1 className="text-6xl md:text-7xl font-bold gradient-text mb-6 animate-fade-in">
-              GitHub Crawler
+              GitHub Crawlee
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto animate-slide-up">
               Unlock powerful insights from any GitHub profile with beautiful visualizations, 
@@ -105,7 +107,7 @@ const HomePage = ({ onSubmit, onLoad }) => {
                     name="nickname"
                     value={formData.nickname}
                     onChange={handleInputChange}
-                    placeholder="e.g. johnnylasagna"
+                    placeholder="e.g. HutanshSharma"
                     className="w-full px-4 py-3 bg-dark-100 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-300"
                     required
                   />

@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useNavigate } from "react-router-dom"
 import RepoCard from './RepoCard';
 import ProfileStats from './ProfileStats';
 import LanguageChart from './LanguageChart';
@@ -8,7 +9,9 @@ import RepoSizeChart from './RepoSizeChart';
 import CommitFrequencyChart from './CommitFrequencyChart';
 import LanguageEvolutionChart from './LanguageEvolutionChart';
 
-const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall, isloaded, setPrevPage}) => {
+const Dashboard = ({ userData, onRepoSelect, onBackToHome, loadall, isloaded, setPrevPage}) => {
+  const navigate = useNavigate()
+
   const filteredRepos = userData.profile.repos_list
 
   const allLanguages = useMemo(() => {
@@ -24,7 +27,6 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall, islo
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-4xl font-bold gradient-text mb-2">
@@ -45,28 +47,23 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall, islo
           </button>
         </div>
 
-        {/* Profile Stats */}
         <ProfileStats profile={userData.profile} />
 
-        {/* Main Charts Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <LanguageChart repos={userData.profile.repos_list} />
           <ActivityChart repos={userData.profile.repos_list} />
         </div>
 
-        {/* Additional Analytics */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <StarsChart repos={userData.profile.repos_list} />
           <RepoSizeChart repos={userData.profile.repos_list} />
         </div>
 
-        {/* Advanced Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <CommitFrequencyChart repos={userData.profile.repos_list} />
           <LanguageEvolutionChart repos={userData.profile.repos_list} />
         </div>
 
-        {/* Repository Insights Summary */}
         <div className="glass-morphism rounded-xl p-6 mb-8">
           <h3 className="text-2xl font-bold text-white mb-6">Repository Insights</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -104,10 +101,10 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall, islo
           <button onClick={()=>{
                               if(!isloaded){
                                 loadall()
-                                onLoad('loading')
+                                navigate('/loading')
                               }
                               else{
-                                onLoad('repos')
+                                navigate('/repos')
                               }
                             }}
             className='w-full bg-gradient-to-r from-primary to-secondary py-4 px-6 rounded-xl text-white font-semibold transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100'>
@@ -115,8 +112,6 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall, islo
           </button>
         </div>
         
-
-        {/* Repositories Grid */}
         <div className="mt-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-white">
@@ -148,7 +143,7 @@ const Dashboard = ({ userData, onRepoSelect, onBackToHome, onLoad, loadall, islo
                   repo={repo}
                   onClick={() =>{
                     onRepoSelect(repo.name)
-                    onLoad('loading')
+                    navigate('/loading')
                     setPrevPage('dashboard')
                   }}
                 />

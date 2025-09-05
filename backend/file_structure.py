@@ -16,7 +16,6 @@ def build_tree(path):
 
 def get_repo_structure(owner, repo, branch="main"):
     url = f"https://github.com/{owner}/{repo}/archive/refs/heads/{branch}.zip"
-    print(f"Downloading {url} ...")
     response = requests.get(url)
     response.raise_for_status()
 

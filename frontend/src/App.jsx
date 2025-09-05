@@ -1,24 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation, Navigate} from "react-router-dom"
 import HomePage from './components/HomePage';
 import Dashboard from './components/Dashboard';
 import RepoDetail from './components/RepoDetail';
 import Loading from './components/Loading';
 import './index.css';
 import Search from './components/SearchComponent';
+import { Home } from 'lucide-react';
+
+function ProtectedRoute({data, children ,prevPage=null}){
+  if(!data && !prevPage){
+    return <Navigate to='/' replace/>
+  }
+  return children
+}
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
+  const location = useLocation()
+  const navigate = useNavigate()
   const [userData, setUserData] = useState(null);
   const [selectedRepo, setSelectedRepo] = useState(null);
   const [isLoaded, setisLoaded] = useState(false)
   const [allrepos, setallrepos] = useState(null)
   const [prevPage, setPrevPage] = useState(null)
 
+  useEffect(()=>{
+    if(location.pathname == '/'){
+      setallrepos(null)
+      setisLoaded(false)
+    }
+  },[location.pathname])
+
   const handleUserSubmit = (formData) => {
     setUserData({
       profile: formData
     });
-    setCurrentPage('dashboard');
+    navigate('/dashboard',{replace:true});
   };
 
   const handleRepoSelect = (repoName) => {
@@ -42,7 +59,7 @@ function App() {
                     "filesData":{...results[5]}
                   }
       setSelectedRepo(data)
-      setCurrentPage('repo-detail')
+      navigate(`/repo/${repoName}`,{replace:true})
     })()
   };
 
@@ -51,21 +68,21 @@ function App() {
       const response = await fetch(`http://localhost:5000/home/${userData.profile.nickname}`)
       const resData = await response.json()
       setallrepos(resData)
-      setCurrentPage('repos')
+      navigate('/repos',{replace:true})
       setisLoaded(true)
     })()
   }
 
   const handleBackToprevpage = () => {
     if(prevPage==='dashboard')
-      setCurrentPage('dashboard');
+      navigate('/dashboard');
     else if(prevPage==='search')
-      setCurrentPage('repos')
+      navigate('/repos')
     setSelectedRepo(null);
   };
 
   const handleBackToHome = () => {
-    setCurrentPage('home');
+    navigate('/');
     setisLoaded(false)
     setUserData(null);
     setSelectedRepo(null);
@@ -73,41 +90,33 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-300 via-dark-200 to-dark-300">
-      {currentPage === 'home' && (
-        <HomePage onSubmit={handleUserSubmit} onLoad = {setCurrentPage}/>
-      )}
-
-      {currentPage === 'loading' && 
-        <Loading />}
-      
-      {currentPage === 'dashboard' && userData && (
-        <Dashboard 
-          userData = {userData} 
-          onRepoSelect = {handleRepoSelect}
-          onBackToHome = {handleBackToHome}
-          onLoad = {setCurrentPage}
-          isloaded = {isLoaded}
-          loadall = {handlereposearch}
-          setPrevPage = {setPrevPage}
-        />
-      )}
-
-      {currentPage === 'repos' && 
-      <Search repos = {allrepos}
-        onRepoSelect={handleRepoSelect}
-        onLoad = {setCurrentPage}
-        onBack={()=>{
-          setCurrentPage('dashboard')
-        }}
-        setPrevPage={setPrevPage}/>}
-      
-      {currentPage === 'repo-detail' && selectedRepo && (
-        <RepoDetail 
-          repo={selectedRepo} 
-          onBack={handleBackToprevpage}
-          prevPage = {prevPage}
-        />
-      )}
+        <Routes>
+          <Route path='/' element={<HomePage onSubmit={handleUserSubmit}/>}/>
+          <Route path="/loading" element={<Loading/>}/>
+          <Route path="/dashboard" 
+          element={<ProtectedRoute data={userData}><Dashboard 
+                    userData = {userData} 
+                    onRepoSelect = {handleRepoSelect}
+                    onBackToHome = {handleBackToHome}
+                    isloaded = {isLoaded}
+                    loadall = {handlereposearch}
+                    setPrevPage = {setPrevPage}
+                  /></ProtectedRoute>} />
+          <Route path="/repos" 
+          element={<ProtectedRoute data={allrepos}><Search repos = {allrepos}
+                    onRepoSelect={handleRepoSelect}
+                    onBack={()=>{
+                      navigate('/dashboard')
+                    }}
+                    setPrevPage={setPrevPage}/></ProtectedRoute>}
+                    />
+          <Route path="/repo/:reponame" 
+          element={<ProtectedRoute data={selectedRepo} prevPage={prevPage}><RepoDetail 
+                    repo={selectedRepo} 
+                    onBack={handleBackToprevpage}
+                    prevPage = {prevPage}
+                  /></ProtectedRoute>} />
+        </Routes>
     </div>
   );
 }

@@ -73,7 +73,6 @@ def home(nickname):
 def search(keyword):
     keyword = keyword.lower()
     data = []
-    print(repos_data)
     for i in repos_data:
         if keyword in i["name"].lower() or keyword in i["description"].lower():
             data.append(i)
